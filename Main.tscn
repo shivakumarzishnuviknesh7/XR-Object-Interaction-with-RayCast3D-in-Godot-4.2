@@ -1,0 +1,116 @@
+[gd_scene load_steps=10 format=3 uid="uid://bj3l75816anov"]
+
+[ext_resource type="Script" path="res://XROrigin3D.gd" id="1_uk25w"]
+[ext_resource type="Script" path="res://Hold.gd" id="2_i8rt1"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ieonj"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_a76y2"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_ftinu"]
+sky_material = SubResource("ProceduralSkyMaterial_a76y2")
+
+[sub_resource type="Environment" id="Environment_h51ym"]
+background_mode = 2
+sky = SubResource("Sky_ftinu")
+tonemap_mode = 2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_clhyn"]
+albedo_color = Color(0.905082, 0.475128, 0.299373, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_6f5ve"]
+material = SubResource("StandardMaterial3D_clhyn")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_apqy3"]
+
+[node name="Node3D" type="Node3D"]
+
+[node name="XROrigin3D" type="XROrigin3D" parent="."]
+script = ExtResource("1_uk25w")
+
+[node name="XRCamera3D" type="XRCamera3D" parent="XROrigin3D"]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="XROrigin3D"]
+transform = Transform3D(1, 0, 0, 0, 0.526229, 0.850343, 0, -0.850343, 0.526229, 0, 0, 0)
+
+[node name="RigidBody3D" type="RigidBody3D" parent="XROrigin3D" groups=["grab"]]
+transform = Transform3D(0.946074, 0.08238, -0.313301, -7.20565e-09, 0.967126, 0.254298, 0.32395, -0.240585, 0.914973, -2.0129, 0, -2.55208)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="XROrigin3D/RigidBody3D"]
+visible = false
+shape = SubResource("BoxShape3D_ieonj")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="XROrigin3D/RigidBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 1.49012e-08, 1, 0, 0, 0)
+layers = 8
+
+[node name="Controller_Left" type="XRController3D" parent="XROrigin3D"]
+tracker = &"left_hand"
+
+[node name="Label3D" type="Label3D" parent="XROrigin3D/Controller_Left"]
+
+[node name="Controller_Right" type="XRController3D" parent="XROrigin3D"]
+tracker = &"right_hand"
+
+[node name="RayCast3D" type="RayCast3D" parent="XROrigin3D/Controller_Right" groups=["grab"]]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0.61, -0.486646)
+target_position = Vector3(0, 0, -3)
+collide_with_areas = true
+script = ExtResource("2_i8rt1")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="XROrigin3D"]
+environment = SubResource("Environment_h51ym")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="XROrigin3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.63004, 0)
+use_collision = true
+size = Vector3(50, 0.2, 50)
+
+[node name="wall 1" type="MeshInstance3D" parent="XROrigin3D"]
+transform = Transform3D(48.1834, 0, 0, 0, 12.2134, 0, 0, 0, 1.44357, 0, 4.44924, 23.86)
+mesh = SubResource("BoxMesh_6f5ve")
+skeleton = NodePath("../..")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="XROrigin3D/wall 1"]
+collision_layer = 3
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="XROrigin3D/wall 1/StaticBody3D"]
+shape = SubResource("BoxShape3D_apqy3")
+
+[node name="wall 2" type="MeshInstance3D" parent="XROrigin3D"]
+transform = Transform3D(48.1834, 0, 0, 0, 12.2134, 0, 0, 0, 1.44357, 0, 4.44924, -23.6747)
+mesh = SubResource("BoxMesh_6f5ve")
+skeleton = NodePath("../..")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="XROrigin3D/wall 2"]
+collision_layer = 7
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="XROrigin3D/wall 2/StaticBody3D"]
+shape = SubResource("BoxShape3D_apqy3")
+
+[node name="wall 3" type="MeshInstance3D" parent="XROrigin3D"]
+transform = Transform3D(0.277512, 0, -1.44354, 0, 12.2135, 0, 48.1826, 0, 0.00831422, -22.6152, 4.44924, -0.00427055)
+mesh = SubResource("BoxMesh_6f5ve")
+skeleton = NodePath("../..")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="XROrigin3D/wall 3"]
+collision_layer = 7
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="XROrigin3D/wall 3/StaticBody3D"]
+shape = SubResource("BoxShape3D_apqy3")
+
+[node name="wall 4" type="MeshInstance3D" parent="XROrigin3D"]
+transform = Transform3D(0.277512, 0, -1.44354, 0, 12.2135, 0, 48.1826, 0, 0.00831422, 22.125, 4.44924, -0.00427055)
+mesh = SubResource("BoxMesh_6f5ve")
+skeleton = NodePath("../..")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="XROrigin3D/wall 4"]
+collision_layer = 7
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="XROrigin3D/wall 4/StaticBody3D"]
+shape = SubResource("BoxShape3D_apqy3")
+
+[connection signal="button_pressed" from="XROrigin3D/Controller_Right" to="XROrigin3D/Controller_Right/RayCast3D" method="_on_controller_right_button_pressed"]
+[connection signal="button_released" from="XROrigin3D/Controller_Right" to="XROrigin3D/Controller_Right/RayCast3D" method="_on_controller_right_button_released"]
