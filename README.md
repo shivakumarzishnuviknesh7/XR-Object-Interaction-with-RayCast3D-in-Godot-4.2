@@ -21,7 +21,7 @@ This project demonstrates how to use a RayCast3D node to interact with objects i
     ```
 2. **Open in Godot**:
     - Open the Godot Engine.
-    - Import the project by selecting the project.godot file.
+    - Import the project by selecting the project.godot  file.
 
 ## Scene Setup
 
